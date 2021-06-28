@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +21,24 @@ namespace ProcessNote
     /// </summary>
     public partial class MainWindow : Window
     {
+        public Process[] processes;
         public MainWindow()
         {
             InitializeComponent();
+            processes = Process.GetProcesses();
+            List<ProcessList> processlist = new List<ProcessList>();
+            foreach (Process item in processes)
+            {
+                processlist.Add(new ProcessList() { id = item.Id, name = item.ProcessName });
+            }
+            ProcessInfo.ItemsSource = processlist;
         }
+    }
+
+    internal class ProcessList
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+
     }
 }
