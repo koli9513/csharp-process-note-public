@@ -65,7 +65,7 @@ namespace ProcessNote
             {
                 var processAttribute = new ProcessAttributes()
                 {
-                    memory = currentProcess.PeakWorkingSet64, starttime = currentProcess.StartTime,
+                    memory = currentProcess.PeakWorkingSet64/ (1024*1024), starttime = currentProcess.StartTime,
                     runtime = currentProcess.TotalProcessorTime
                 };
 
