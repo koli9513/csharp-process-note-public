@@ -23,5 +23,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left">Show threads</Button>
     </Grid>
 </Window>
