@@ -26,6 +26,7 @@ namespace ProcessNote
         HashSet<ProcessThread> processThreads = new HashSet<ProcessThread>();
         Process currentProcess;
         Dictionary<int, List<string>> processComments = new Dictionary<int, List<string>>();
+        private bool isCommentBoxOpen = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -55,6 +56,23 @@ namespace ProcessNote
 
         private void Select_Row(object sender, SelectionChangedEventArgs e)
         {
+            if (isCommentBoxOpen)
+            {
+                string comment = InputTextBox.Text;
+                if (comment != "")
+                {
+                    MessageBox.Show("Would you like to save comment first?");
+                    if (processComments.ContainsKey(currentProcess.Id))
+                        processComments[currentProcess.Id].Add(comment);
+                    else
+                        processComments[currentProcess.Id] = new List<string>() { comment };
+                }
+
+                CommentBox.Visibility = Visibility.Collapsed;
+                InputTextBox.Text = string.Empty;
+
+                isCommentBoxOpen = false;
+            }
             ProcessList selectedProcess = (ProcessList)ProcessInfo.SelectedItem;
 
             currentProcess = processes.Where(process => process.Id.Equals(selectedProcess.id)).First();
@@ -76,7 +94,10 @@ namespace ProcessNote
             if (currentProcess == null)
                 MessageBox.Show("Please select a process");
             else
+            {
                 CommentBox.Visibility = Visibility.Visible;
+                isCommentBoxOpen = true;
+            }
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -89,12 +110,15 @@ namespace ProcessNote
                 processComments[currentProcess.Id].Add(comment);
             else
                 processComments[currentProcess.Id] = new List<string>() { comment };
+
+            isCommentBoxOpen = false;
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             CommentBox.Visibility = Visibility.Collapsed;
             InputTextBox.Text = string.Empty;
+            isCommentBoxOpen = false;
         }
     }
 
