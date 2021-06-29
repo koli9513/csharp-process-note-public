@@ -25,6 +25,7 @@ namespace ProcessNote
         public Process[] processes;
         HashSet<ProcessThread> processThreads = new HashSet<ProcessThread>();
         Process currentProcess;
+        Dictionary<int, List<string>> processComments = new Dictionary<int, List<string>>();
         public MainWindow()
         {
             InitializeComponent();
@@ -59,10 +60,10 @@ namespace ProcessNote
             currentProcess = processes.Where(process => process.Id.Equals(selectedProcess.id)).First();
 
             processThreads = new HashSet<ProcessThread>();
-            collectThreads();
+            CollectThreads();
         }
 
-        private void collectThreads()
+        private void CollectThreads()
         {
             foreach(ProcessThread processThread in currentProcess.Threads)
             {
@@ -72,18 +73,28 @@ namespace ProcessNote
 
         private void AddComment_Click(object sender, RoutedEventArgs e)
         {
-            CommentBox.Visibility = Visibility.Visible;
+            if (currentProcess == null)
+                MessageBox.Show("Please select a process");
+            else
+                CommentBox.Visibility = Visibility.Visible;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             CommentBox.Visibility = Visibility.Collapsed;
+            string comment = InputTextBox.Text;
+            InputTextBox.Text = string.Empty;
+
+            if (processComments.ContainsKey(currentProcess.Id))
+                processComments[currentProcess.Id].Add(comment);
+            else
+                processComments[currentProcess.Id] = new List<string>() { comment };
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             CommentBox.Visibility = Visibility.Collapsed;
-            InputTextBox.Text = String.Empty;
+            InputTextBox.Text = string.Empty;
         }
     }
 
