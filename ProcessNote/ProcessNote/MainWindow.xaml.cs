@@ -59,10 +59,10 @@ namespace ProcessNote
             currentProcess = processes.Where(process => process.Id.Equals(selectedProcess.id)).First();
 
             processThreads = new HashSet<ProcessThread>();
-            collectThreads(currentProcess);
+            collectThreads();
         }
 
-        private void collectThreads(Process currentProcess)
+        private void collectThreads()
         {
             foreach(ProcessThread processThread in currentProcess.Threads)
             {
