@@ -36,7 +36,36 @@ namespace ProcessNote
 
         private void ShowThreads_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Threads");
+            ProcessThreadCollection currentThreads = Process.GetCurrentProcess().Threads;
+
+            List<ThreadList> threadList = new List<ThreadList>();
+            foreach (ProcessThread thread in currentThreads)
+            {
+                threadList.Add(new ThreadList() { id = thread.Id, startTime = thread.StartTime });
+            }
+            var message = string.Join(Environment.NewLine, threadList);
+            MessageBox.Show(message);
+        }
+
+        private void ProcessInfo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ProcessList SelectedItem = (ProcessList)ProcessInfo.SelectedItem;
+
+            if (SelectedItem != null)
+            {
+
+            }
+        }
+    }
+
+    internal class ThreadList
+    {
+        public int id { get; set; }
+        public DateTime startTime { get; set; }
+
+        public override string ToString()
+        {
+            return "ID: " + id + " Start time: " + startTime;
         }
     }
 
