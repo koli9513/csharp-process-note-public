@@ -69,6 +69,21 @@ namespace ProcessNote
                 processThreads.Add(processThread);
             }
         }
+
+        private void AddComment_Click(object sender, RoutedEventArgs e)
+        {
+            CommentBox.Visibility = Visibility.Visible;
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
     internal class ProcessList

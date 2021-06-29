@@ -24,5 +24,19 @@
             </ListView.View>
         </ListView>
         <Button Click="ShowThreads_Click" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left">Show threads</Button>
+        <Button Click="AddComment_Click" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left">Add comment</Button>
+        <Grid x:Name="CommentBox" Visibility="Collapsed">
+            <Grid/>
+            <Border Background="White" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Margin="5" Text="Leave a comment:"/>
+                    <TextBox MinWidth="200" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="InputTextBox"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button x:Name="SaveButton" Margin="5" Content="Save" Background="{x:Null}" Click="SaveButton_Click"/>
+                        <Button x:Name="CancelButton" Margin="5" Content="Cancel" Background="{x:Null}" Click="CancelButton_Click" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>
