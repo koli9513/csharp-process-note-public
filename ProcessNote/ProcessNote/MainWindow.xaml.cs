@@ -33,6 +33,7 @@ namespace ProcessNote
             }
             ProcessInfo.ItemsSource = processlist;
         }
+
     }
 
     internal class ProcessList
@@ -41,4 +42,5 @@ namespace ProcessNote
         public string name { get; set; }
 
     }
+   
 }
