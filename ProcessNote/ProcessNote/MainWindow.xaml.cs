@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -22,6 +23,8 @@ namespace ProcessNote
     public partial class MainWindow : Window
     {
         public Process[] processes;
+        HashSet<ProcessThread> processThreads = new HashSet<ProcessThread>();
+        Process currentProcess;
         public MainWindow()
         {
             InitializeComponent();
@@ -36,36 +39,35 @@ namespace ProcessNote
 
         private void ShowThreads_Click(object sender, RoutedEventArgs e)
         {
-            ProcessThreadCollection currentThreads = Process.GetCurrentProcess().Threads;
-
-            List<ThreadList> threadList = new List<ThreadList>();
-            foreach (ProcessThread thread in currentThreads)
+            string dialogContent;
+            try
             {
-                threadList.Add(new ThreadList() { id = thread.Id, startTime = thread.StartTime });
+                var threadList = processThreads.Select(processThread => processThread.Id + " " + processThread.StartTime).ToArray();
+                dialogContent = string.Join(Environment.NewLine, threadList);
             }
-            var message = string.Join(Environment.NewLine, threadList);
-            MessageBox.Show(message);
+            catch (Exception)
+            {
+                dialogContent = "No threads linked to this process";
+            }
+            MessageBox.Show(dialogContent);
         }
 
-        private void ProcessInfo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Select_Row(object sender, SelectionChangedEventArgs e)
         {
-            ProcessList SelectedItem = (ProcessList)ProcessInfo.SelectedItem;
+            ProcessList selectedProcess = (ProcessList)ProcessInfo.SelectedItem;
 
-            if (SelectedItem != null)
-            {
+            currentProcess = processes.Where(process => process.Id.Equals(selectedProcess.id)).First();
 
-            }
+            processThreads = new HashSet<ProcessThread>();
+            collectThreads(currentProcess);
         }
-    }
 
-    internal class ThreadList
-    {
-        public int id { get; set; }
-        public DateTime startTime { get; set; }
-
-        public override string ToString()
+        private void collectThreads(Process currentProcess)
         {
-            return "ID: " + id + " Start time: " + startTime;
+            foreach(ProcessThread processThread in currentProcess.Threads)
+            {
+                processThreads.Add(processThread);
+            }
         }
     }
 
