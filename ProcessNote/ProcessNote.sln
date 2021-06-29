@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessNote", "ProcessNote\ProcessNote.csproj", "{8514CB95-D727-4A35-8D1A-8BB7C73F8381}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8514CB95-D727-4A35-8D1A-8BB7C73F8381}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8514CB95-D727-4A35-8D1A-8BB7C73F8381}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8514CB95-D727-4A35-8D1A-8BB7C73F8381}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8514CB95-D727-4A35-8D1A-8BB7C73F8381}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E8810185-3F44-405C-AF9E-9CA18687202B}
+	EndGlobalSection
+EndGlobal
