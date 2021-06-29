@@ -34,6 +34,10 @@ namespace ProcessNote
             ProcessInfo.ItemsSource = processlist;
         }
 
+        private void ShowThreads_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Threads");
+        }
     }
 
     internal class ProcessList
