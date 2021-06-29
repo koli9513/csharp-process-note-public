@@ -15,7 +15,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ListView Margin="10" Name="ProcessInfo" Grid.RowSpan="2">
+        <ListView Margin="10" Name="ProcessInfo" Grid.RowSpan="2" SelectionChanged="Select_Row">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding name}" />
@@ -23,5 +23,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button Click="ShowThreads_Click" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left">Show threads</Button>
     </Grid>
 </Window>
