@@ -23,6 +23,16 @@
                 </GridView>
             </ListView.View>
         </ListView>
+       <ListView Grid.Column="1" Grid.Row="0" Name="Attributes">
+           <ListView.View>
+               <GridView>
+                   <GridViewColumn Header="RAM" Width="50" DisplayMemberBinding="{Binding memory}" />
+                   <GridViewColumn Header="Running Time" Width="100" DisplayMemberBinding="{Binding runtime}" />
+                   <GridViewColumn Header="Start Time" Width="100" DisplayMemberBinding="{Binding starttime}" />
+               </GridView>
+           </ListView.View>
+       </ListView>
+            
         <Button Click="ShowThreads_Click" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left">Show threads</Button>
     </Grid>
 </Window>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -33,6 +34,7 @@ namespace ProcessNote
             foreach (Process item in processes)
             {
                 processlist.Add(new ProcessList() { id = item.Id, name = item.ProcessName });
+                
             }
             ProcessInfo.ItemsSource = processlist;
         }
@@ -55,8 +57,26 @@ namespace ProcessNote
         private void Select_Row(object sender, SelectionChangedEventArgs e)
         {
             ProcessList selectedProcess = (ProcessList)ProcessInfo.SelectedItem;
+            List<ProcessAttributes> processAttributesList = new List<ProcessAttributes>();
 
             currentProcess = processes.Where(process => process.Id.Equals(selectedProcess.id)).First();
+
+            try
+            {
+                var processAttribute = new ProcessAttributes()
+                {
+                    memory = currentProcess.PeakWorkingSet64, starttime = currentProcess.StartTime,
+                    runtime = currentProcess.TotalProcessorTime
+                };
+
+                processAttributesList.Add(processAttribute);
+
+                Attributes.ItemsSource = processAttributesList;
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("This process isn't running at this time.");
+            }
 
             processThreads = new HashSet<ProcessThread>();
             collectThreads();
@@ -75,7 +95,17 @@ namespace ProcessNote
     {
         public int id { get; set; }
         public string name { get; set; }
+        
 
+    }
+
+    internal class ProcessAttributes
+    {
+        
+        public long memory { get; set; }
+        public DateTime starttime { get; set; }
+        public TimeSpan runtime { get; set; }
+        
     }
    
 }
