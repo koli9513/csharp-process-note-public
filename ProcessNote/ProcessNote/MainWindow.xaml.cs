@@ -77,12 +77,13 @@ namespace ProcessNote
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-
+            CommentBox.Visibility = Visibility.Collapsed;
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-
+            CommentBox.Visibility = Visibility.Collapsed;
+            InputTextBox.Text = String.Empty;
         }
     }
 
