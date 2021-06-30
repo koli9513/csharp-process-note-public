@@ -14,6 +14,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <ListView Margin="10" Name="ProcessInfo" Grid.RowSpan="2" SelectionChanged="Select_Row">
             <ListView.View>
@@ -35,5 +36,26 @@
        </ListView>
             
         <Button Click="ShowThreads_Click" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left">Show threads</Button>
+        <Button Click="AddComment_Click" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left">Add comment</Button>
+        <ListView Name="Comments" Grid.Row="2" Grid.ColumnSpan="2">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Comments" DisplayMemberBinding="{Binding Content}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Grid x:Name="CommentBox" Visibility="Collapsed">
+            <Grid/>
+            <Border Background="White" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Margin="5" Text="Leave a comment:"/>
+                    <TextBox MinWidth="200" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="InputTextBox"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button x:Name="SaveButton" Margin="5" Content="Save" Background="{x:Null}" Click="SaveButton_Click"/>
+                        <Button x:Name="CancelButton" Margin="5" Content="Cancel" Background="{x:Null}" Click="CancelButton_Click" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>
