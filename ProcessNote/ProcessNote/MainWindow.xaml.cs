@@ -186,6 +186,7 @@ namespace ProcessNote
             catch(Exception)
             {
                 MessageBox.Show("This process isn't running at this time.");
+                Attributes.ItemsSource = null;
             }
 
             processThreads = new HashSet<ProcessThread>();
