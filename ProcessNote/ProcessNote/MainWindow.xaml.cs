@@ -56,13 +56,14 @@ namespace ProcessNote
             MessageBox.Show(dialogContent);
         }
         
-        private readonly PerformanceCounter _theCPUCounter = 
+        private readonly PerformanceCounter _theCpuCounter = 
             new PerformanceCounter("Processor", "% Processor Time", "_Total");
         
 
         private void Select_Row(object sender, SelectionChangedEventArgs e)
         {
             ShowAttributes();
+            RemindUserToSaveComment();
         }
 
         private void CloseCommentMessageBox()
@@ -148,6 +149,7 @@ namespace ProcessNote
         private void ProcessInfo_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ShowAttributes();
+            RemindUserToSaveComment();
         }
 
         private void ShowAttributes()
@@ -157,21 +159,11 @@ namespace ProcessNote
             
             currentProcess = processes.Where(process => process.Id.Equals(selectedProcess.id)).First();
             
-            if (isCommentBoxOpen)
-            {
-                string comment = InputTextBox.Text;
-                if (comment != "")
-                {
-                    AskUserToSavePreviousComment(comment);
-                }
-                CloseCommentMessageBox();
-            }
-            
             try
             {
                 var processAttribute = new ProcessAttributes()
                 {
-                    cpu = (this._theCPUCounter.NextValue()/100).ToString("0.00") + "%",
+                    cpu = (this._theCpuCounter.NextValue()/100).ToString("0.00") + "%",
                     memory = (currentProcess.PeakWorkingSet64 / (1024 * 1024)).ToString("0.0") + " MB", starttime = currentProcess.StartTime,
                     runtime = currentProcess.TotalProcessorTime
                 };
@@ -188,10 +180,25 @@ namespace ProcessNote
 
             processThreads = new HashSet<ProcessThread>();
             CollectThreads();
-            DisplayComments();
+            
             
         }
+
+        private void RemindUserToSaveComment()
+        {
+            if (isCommentBoxOpen)
+            {
+                string comment = InputTextBox.Text;
+                if (comment != "")
+                {
+                    AskUserToSavePreviousComment(comment);
+                }
+                CloseCommentMessageBox();
+            }
+            
+            DisplayComments();
         }
+    }
 
     internal class ProcessComment
     {
