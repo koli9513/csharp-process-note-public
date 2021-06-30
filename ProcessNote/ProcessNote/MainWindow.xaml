@@ -27,10 +27,10 @@
        <ListView Grid.Column="1" Grid.Row="0" x:Name="Attributes">
            <ListView.View>
                <GridView>
-                   <GridViewColumn Header="CPU" Width="50" DisplayMemberBinding="{Binding cpu}" />
-                   <GridViewColumn Header="RAM" Width="50" DisplayMemberBinding="{Binding memory}" />
-                   <GridViewColumn Header="Running Time" Width="100" DisplayMemberBinding="{Binding runtime}" />
-                   <GridViewColumn Header="Start Time" Width="100" DisplayMemberBinding="{Binding starttime}" />
+                   <GridViewColumn Header="CPU" Width="55" DisplayMemberBinding="{Binding cpu}" />
+                   <GridViewColumn Header="RAM" Width="60" DisplayMemberBinding="{Binding memory}" />
+                   <GridViewColumn Header="Running Time" Width="110" DisplayMemberBinding="{Binding runtime}" />
+                   <GridViewColumn Header="Start Time" Width="110" DisplayMemberBinding="{Binding starttime}" />
                </GridView>
            </ListView.View>
        </ListView>

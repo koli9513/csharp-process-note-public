@@ -85,7 +85,7 @@ namespace ProcessNote
                 var processAttribute = new ProcessAttributes()
                 {
                     cpu = (this._theCPUCounter.NextValue()/100).ToString("0.00") + "%",
-                    memory = currentProcess.PeakWorkingSet64/ (1024*1024), starttime = currentProcess.StartTime,
+                    memory = (currentProcess.PeakWorkingSet64 / (1024 * 1024)).ToString("0.0") + " MB", starttime = currentProcess.StartTime,
                     runtime = currentProcess.TotalProcessorTime
                 };
 
@@ -202,7 +202,7 @@ namespace ProcessNote
     {
 
         public string cpu { get; set; }
-        public long memory { get; set; }
+        public string memory { get; set; }
         public DateTime starttime { get; set; }
         public TimeSpan runtime { get; set; }
         
