@@ -28,6 +28,7 @@ namespace ProcessNote
         private Process currentProcess;
         private Dictionary<int, List<string>> processComments = new Dictionary<int, List<string>>();
         private bool isCommentBoxOpen = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -35,9 +36,10 @@ namespace ProcessNote
             List<ProcessList> processlist = new List<ProcessList>();
             foreach (Process item in processes)
             {
-                processlist.Add(new ProcessList() { id = item.Id, name = item.ProcessName });
-                
+                processlist.Add(new ProcessList() {id = item.Id, name = item.ProcessName});
+
             }
+
             ProcessInfo.ItemsSource = processlist;
         }
 
@@ -46,19 +48,21 @@ namespace ProcessNote
             string dialogContent;
             try
             {
-                var threadList = processThreads.Select(processThread => processThread.Id + " " + processThread.StartTime).ToArray();
+                var threadList = processThreads
+                    .Select(processThread => processThread.Id + " " + processThread.StartTime).ToArray();
                 dialogContent = string.Join(Environment.NewLine, threadList);
             }
             catch (Exception)
             {
                 dialogContent = "No threads linked to this process";
             }
+
             MessageBox.Show(dialogContent);
         }
-        
-        private readonly PerformanceCounter _theCpuCounter = 
+
+        private readonly PerformanceCounter _theCpuCounter =
             new PerformanceCounter("Processor", "% Processor Time", "_Total");
-        
+
 
         private void Select_Row(object sender, SelectionChangedEventArgs e)
         {
@@ -90,8 +94,9 @@ namespace ProcessNote
                 List<ProcessComment> commentList = new List<ProcessComment>();
                 foreach (string comment in processComments[currentProcess.Id])
                 {
-                    commentList.Add(new ProcessComment() { Content = comment });
+                    commentList.Add(new ProcessComment() {Content = comment});
                 }
+
                 Comments.ItemsSource = commentList;
             }
             else
@@ -108,13 +113,13 @@ namespace ProcessNote
             }
             else
             {
-                processComments[currentProcess.Id] = new List<string>() { comment };
+                processComments[currentProcess.Id] = new List<string>() {comment};
             }
         }
 
         private void CollectThreads()
         {
-            foreach(ProcessThread processThread in currentProcess.Threads)
+            foreach (ProcessThread processThread in currentProcess.Threads)
             {
                 processThreads.Add(processThread);
             }
@@ -155,17 +160,18 @@ namespace ProcessNote
 
         private void ShowAttributes()
         {
-            ProcessList selectedProcess = (ProcessList)ProcessInfo.SelectedItem;
+            ProcessList selectedProcess = (ProcessList) ProcessInfo.SelectedItem;
             List<ProcessAttributes> processAttributesList = new List<ProcessAttributes>();
-            
+
             currentProcess = processes.Where(process => process.Id.Equals(selectedProcess.id)).First();
-            
+
             try
             {
                 var processAttribute = new ProcessAttributes()
                 {
-                    cpu = (this._theCpuCounter.NextValue()/100).ToString("0.00") + "%",
-                    memory = (currentProcess.PeakWorkingSet64 / (1024 * 1024)).ToString("0.0") + " MB", starttime = currentProcess.StartTime,
+                    cpu = (this._theCpuCounter.NextValue() / 100).ToString("0.00") + "%",
+                    memory = (currentProcess.PeakWorkingSet64 / (1024 * 1024)).ToString("0.0") + " MB",
+                    starttime = currentProcess.StartTime,
                     runtime = currentProcess.TotalProcessorTime
                 };
 
@@ -173,7 +179,7 @@ namespace ProcessNote
 
                 Attributes.ItemsSource = processAttributesList;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 MessageBox.Show("This process isn't running at this time.");
                 Attributes.ItemsSource = null;
@@ -181,8 +187,8 @@ namespace ProcessNote
 
             processThreads = new HashSet<ProcessThread>();
             CollectThreads();
-            
-            
+
+
         }
 
         private void RemindUserToSaveComment()
@@ -194,39 +200,41 @@ namespace ProcessNote
                 {
                     AskUserToSavePreviousComment(comment);
                 }
+
                 CloseCommentMessageBox();
             }
-            
+
             DisplayComments();
+
+        }
 
         private void AlwaysOnTop_CheckedChanged(object sender, RoutedEventArgs e)
         {
             Topmost = AlwaysOnTop.IsChecked == true;
 
         }
+        internal class ProcessComment
+        {
+            public string Content { get; set; }
+        }
+
+        internal class ProcessList
+        {
+            public int id { get; set; }
+            public string name { get; set; }
+
+
+        }
+
+        internal class ProcessAttributes
+        {
+
+            public string cpu { get; set; }
+            public string memory { get; set; }
+            public DateTime starttime { get; set; }
+            public TimeSpan runtime { get; set; }
+
+        }
+
     }
-
-    internal class ProcessComment
-    {
-        public string Content { get; set; }
-    }
-
-    internal class ProcessList
-    {
-        public int id { get; set; }
-        public string name { get; set; }
-        
-
-    }
-
-    internal class ProcessAttributes
-    {
-
-        public string cpu { get; set; }
-        public string memory { get; set; }
-        public DateTime starttime { get; set; }
-        public TimeSpan runtime { get; set; }
-        
-    }
-   
 }
