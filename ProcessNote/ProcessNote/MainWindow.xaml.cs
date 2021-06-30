@@ -146,6 +146,7 @@ namespace ProcessNote
             CloseCommentMessageBox();
         }
 
+
         private void ProcessInfo_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ShowAttributes();
@@ -197,6 +198,11 @@ namespace ProcessNote
             }
             
             DisplayComments();
+
+        private void AlwaysOnTop_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            Topmost = AlwaysOnTop.IsChecked == true;
+
         }
     }
 
