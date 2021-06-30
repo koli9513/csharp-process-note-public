@@ -22,10 +22,10 @@ namespace ProcessNote
     /// </summary>
     public partial class MainWindow : Window
     {
-        public Process[] processes;
-        HashSet<ProcessThread> processThreads = new HashSet<ProcessThread>();
-        Process currentProcess;
-        Dictionary<int, List<string>> processComments = new Dictionary<int, List<string>>();
+        private Process[] processes;
+        private HashSet<ProcessThread> processThreads = new HashSet<ProcessThread>();
+        private Process currentProcess;
+        private Dictionary<int, List<string>> processComments = new Dictionary<int, List<string>>();
         private bool isCommentBoxOpen = false;
         public MainWindow()
         {
