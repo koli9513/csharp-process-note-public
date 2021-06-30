@@ -22,9 +22,11 @@ namespace ProcessNote
     /// </summary>
     public partial class MainWindow : Window
     {
-        public Process[] processes;
-        HashSet<ProcessThread> processThreads = new HashSet<ProcessThread>();
-        Process currentProcess;
+        private Process[] processes;
+        private HashSet<ProcessThread> processThreads = new HashSet<ProcessThread>();
+        private Process currentProcess;
+        private Dictionary<int, List<string>> processComments = new Dictionary<int, List<string>>();
+        private bool isCommentBoxOpen = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -54,21 +56,109 @@ namespace ProcessNote
 
         private void Select_Row(object sender, SelectionChangedEventArgs e)
         {
+            if (isCommentBoxOpen)
+            {
+                string comment = InputTextBox.Text;
+                if (comment != "")
+                {
+                    AskUserToSavePreviousComment(comment);
+                }
+                CloseCommentMessageBox();
+            }
             ProcessList selectedProcess = (ProcessList)ProcessInfo.SelectedItem;
 
             currentProcess = processes.Where(process => process.Id.Equals(selectedProcess.id)).First();
 
             processThreads = new HashSet<ProcessThread>();
-            collectThreads();
+            CollectThreads();
+
+            DisplayComments();
         }
 
-        private void collectThreads()
+        private void CloseCommentMessageBox()
+        {
+            CommentBox.Visibility = Visibility.Collapsed;
+            InputTextBox.Text = string.Empty;
+            isCommentBoxOpen = false;
+        }
+
+        private void AskUserToSavePreviousComment(string comment)
+        {
+            string messageBoxText = "Would you like to save your comment first?";
+            MessageBoxResult result = MessageBox.Show(messageBoxText, "", MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
+            {
+                SaveComment(comment);
+            }
+        }
+
+        private void DisplayComments()
+        {
+            if (processComments.ContainsKey(currentProcess.Id))
+            {
+                List<ProcessComment> commentList = new List<ProcessComment>();
+                foreach (string comment in processComments[currentProcess.Id])
+                {
+                    commentList.Add(new ProcessComment() { Content = comment });
+                }
+                Comments.ItemsSource = commentList;
+            }
+            else
+            {
+                Comments.ItemsSource = null;
+            }
+        }
+
+        private void SaveComment(string comment)
+        {
+            if (processComments.ContainsKey(currentProcess.Id))
+            {
+                processComments[currentProcess.Id].Add(comment);
+            }
+            else
+            {
+                processComments[currentProcess.Id] = new List<string>() { comment };
+            }
+        }
+
+        private void CollectThreads()
         {
             foreach(ProcessThread processThread in currentProcess.Threads)
             {
                 processThreads.Add(processThread);
             }
         }
+
+        private void AddComment_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentProcess == null)
+            {
+                MessageBox.Show("Please select a process");
+            }
+            else
+            {
+                CommentBox.Visibility = Visibility.Visible;
+                isCommentBoxOpen = true;
+            }
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            string comment = InputTextBox.Text;
+            SaveComment(comment);
+            CloseCommentMessageBox();
+            DisplayComments();
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            CloseCommentMessageBox();
+        }
+    }
+
+    internal class ProcessComment
+    {
+        public string Content { get; set; }
     }
 
     internal class ProcessList
