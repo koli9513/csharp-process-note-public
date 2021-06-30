@@ -61,11 +61,12 @@ namespace ProcessNote
                 string comment = InputTextBox.Text;
                 if (comment != "")
                 {
-                    MessageBox.Show("Would you like to save comment first?");
-                    if (processComments.ContainsKey(currentProcess.Id))
-                        processComments[currentProcess.Id].Add(comment);
-                    else
-                        processComments[currentProcess.Id] = new List<string>() { comment };
+                    string messageBoxText = "Would you like to save your comment first?";
+                    MessageBoxResult result = MessageBox.Show(messageBoxText, "", MessageBoxButton.OKCancel);
+                    if (result == MessageBoxResult.OK)
+                    {
+                        SaveComment(comment);
+                    }
                 }
 
                 CommentBox.Visibility = Visibility.Collapsed;
@@ -81,6 +82,18 @@ namespace ProcessNote
             CollectThreads();
         }
 
+        private void SaveComment(string comment)
+        {
+            if (processComments.ContainsKey(currentProcess.Id))
+            {
+                processComments[currentProcess.Id].Add(comment);
+            }
+            else
+            {
+                processComments[currentProcess.Id] = new List<string>() { comment };
+            }
+        }
+
         private void CollectThreads()
         {
             foreach(ProcessThread processThread in currentProcess.Threads)
@@ -92,7 +105,9 @@ namespace ProcessNote
         private void AddComment_Click(object sender, RoutedEventArgs e)
         {
             if (currentProcess == null)
+            {
                 MessageBox.Show("Please select a process");
+            }
             else
             {
                 CommentBox.Visibility = Visibility.Visible;
@@ -106,10 +121,7 @@ namespace ProcessNote
             string comment = InputTextBox.Text;
             InputTextBox.Text = string.Empty;
 
-            if (processComments.ContainsKey(currentProcess.Id))
-                processComments[currentProcess.Id].Add(comment);
-            else
-                processComments[currentProcess.Id] = new List<string>() { comment };
+            SaveComment(comment);
 
             isCommentBoxOpen = false;
         }
