@@ -53,6 +53,10 @@ namespace ProcessNote
             }
             MessageBox.Show(dialogContent);
         }
+        
+        private PerformanceCounter theCPUCounter = 
+            new PerformanceCounter("Processor", "% Processor Time", "_Total");
+        
 
         private void Select_Row(object sender, SelectionChangedEventArgs e)
         {
@@ -60,11 +64,16 @@ namespace ProcessNote
             List<ProcessAttributes> processAttributesList = new List<ProcessAttributes>();
 
             currentProcess = processes.Where(process => process.Id.Equals(selectedProcess.id)).First();
+            
+            
 
             try
             {
+                
+
                 var processAttribute = new ProcessAttributes()
                 {
+                    cpu = (this.theCPUCounter.NextValue()/100).ToString() + "%",
                     memory = currentProcess.PeakWorkingSet64/ (1024*1024), starttime = currentProcess.StartTime,
                     runtime = currentProcess.TotalProcessorTime
                 };
@@ -101,7 +110,8 @@ namespace ProcessNote
 
     internal class ProcessAttributes
     {
-        
+
+        public string cpu { get; set; }
         public long memory { get; set; }
         public DateTime starttime { get; set; }
         public TimeSpan runtime { get; set; }
