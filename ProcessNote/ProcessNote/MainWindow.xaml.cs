@@ -186,7 +186,7 @@ namespace ProcessNote
 
         private void AlwaysOnTop_CheckedChanged(object sender, RoutedEventArgs e)
         {
-
+            Topmost = AlwaysOnTop.IsChecked == true;
         }
     }
 
