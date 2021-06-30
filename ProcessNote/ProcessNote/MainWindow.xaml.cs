@@ -183,6 +183,11 @@ namespace ProcessNote
         {
             CloseCommentMessageBox();
         }
+
+        private void AlwaysOnTop_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
     internal class ProcessComment
