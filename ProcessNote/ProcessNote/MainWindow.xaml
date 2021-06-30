@@ -14,6 +14,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <ListView Margin="10" Name="ProcessInfo" Grid.RowSpan="2" SelectionChanged="Select_Row">
             <ListView.View>
@@ -24,7 +25,14 @@
             </ListView.View>
         </ListView>
         <Button Click="ShowThreads_Click" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left">Show threads</Button>
-        <Button Click="AddComment_Click" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left">Add comment</Button>
+        <Button Click="AddComment_Click" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left">Add comment</Button>
+        <ListView Name="Comments" Grid.Row="2" Grid.ColumnSpan="2">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Comments" DisplayMemberBinding="{Binding Content}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
         <Grid x:Name="CommentBox" Visibility="Collapsed">
             <Grid/>
             <Border Background="White" HorizontalAlignment="Center" VerticalAlignment="Center">

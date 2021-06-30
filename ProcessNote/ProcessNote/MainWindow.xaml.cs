@@ -61,18 +61,9 @@ namespace ProcessNote
                 string comment = InputTextBox.Text;
                 if (comment != "")
                 {
-                    string messageBoxText = "Would you like to save your comment first?";
-                    MessageBoxResult result = MessageBox.Show(messageBoxText, "", MessageBoxButton.OKCancel);
-                    if (result == MessageBoxResult.OK)
-                    {
-                        SaveComment(comment);
-                    }
+                    AskUserToSavePreviousComment(comment);
                 }
-
-                CommentBox.Visibility = Visibility.Collapsed;
-                InputTextBox.Text = string.Empty;
-
-                isCommentBoxOpen = false;
+                CloseCommentMessageBox();
             }
             ProcessList selectedProcess = (ProcessList)ProcessInfo.SelectedItem;
 
@@ -80,6 +71,42 @@ namespace ProcessNote
 
             processThreads = new HashSet<ProcessThread>();
             CollectThreads();
+
+            DisplayComments();
+        }
+
+        private void CloseCommentMessageBox()
+        {
+            CommentBox.Visibility = Visibility.Collapsed;
+            InputTextBox.Text = string.Empty;
+            isCommentBoxOpen = false;
+        }
+
+        private void AskUserToSavePreviousComment(string comment)
+        {
+            string messageBoxText = "Would you like to save your comment first?";
+            MessageBoxResult result = MessageBox.Show(messageBoxText, "", MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
+            {
+                SaveComment(comment);
+            }
+        }
+
+        private void DisplayComments()
+        {
+            if (processComments.ContainsKey(currentProcess.Id))
+            {
+                List<ProcessComment> commentList = new List<ProcessComment>();
+                foreach (string comment in processComments[currentProcess.Id])
+                {
+                    commentList.Add(new ProcessComment() { Content = comment });
+                }
+                Comments.ItemsSource = commentList;
+            }
+            else
+            {
+                Comments.ItemsSource = null;
+            }
         }
 
         private void SaveComment(string comment)
@@ -117,21 +144,21 @@ namespace ProcessNote
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            CommentBox.Visibility = Visibility.Collapsed;
             string comment = InputTextBox.Text;
-            InputTextBox.Text = string.Empty;
-
             SaveComment(comment);
-
-            isCommentBoxOpen = false;
+            CloseCommentMessageBox();
+            DisplayComments();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            CommentBox.Visibility = Visibility.Collapsed;
-            InputTextBox.Text = string.Empty;
-            isCommentBoxOpen = false;
+            CloseCommentMessageBox();
         }
+    }
+
+    internal class ProcessComment
+    {
+        public string Content { get; set; }
     }
 
     internal class ProcessList
