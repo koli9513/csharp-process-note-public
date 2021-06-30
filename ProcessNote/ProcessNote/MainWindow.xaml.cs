@@ -92,12 +92,9 @@ namespace ProcessNote
         {
             if (processComments.ContainsKey(currentProcess.Id))
             {
-                List<ProcessComment> commentList = new List<ProcessComment>();
-                foreach (string comment in processComments[currentProcess.Id])
-                {
-                    commentList.Add(new ProcessComment() {Content = comment});
-                }
-
+                var commentList = processComments[currentProcess.Id]
+                    .Select(comment => new ProcessComment() { Content = comment })
+                    .ToList();
                 Comments.ItemsSource = commentList;
             }
             else
