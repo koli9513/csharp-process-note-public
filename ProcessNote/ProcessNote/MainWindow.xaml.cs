@@ -66,8 +66,9 @@ namespace ProcessNote
 
         private void Select_Row(object sender, SelectionChangedEventArgs e)
         {
-            ShowAttributes();
             RemindUserToSaveComment();
+            ShowAttributes();
+            DisplayComments();
         }
 
         private void CloseCommentMessageBox()
@@ -154,8 +155,9 @@ namespace ProcessNote
 
         private void ProcessInfo_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ShowAttributes();
             RemindUserToSaveComment();
+            ShowAttributes();
+            DisplayComments();
         }
 
         private void ShowAttributes()
@@ -203,8 +205,6 @@ namespace ProcessNote
 
                 CloseCommentMessageBox();
             }
-
-            DisplayComments();
 
         }
 
