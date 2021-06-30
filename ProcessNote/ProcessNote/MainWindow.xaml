@@ -16,7 +16,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ListView Margin="10" Name="ProcessInfo" Grid.RowSpan="2" SelectionChanged="Select_Row">
+        <ListView Margin="10" Name="ProcessInfo" Grid.RowSpan="2" SelectionChanged="Select_Row" MouseDoubleClick="ProcessInfo_OnMouseDoubleClick">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding name}" />
