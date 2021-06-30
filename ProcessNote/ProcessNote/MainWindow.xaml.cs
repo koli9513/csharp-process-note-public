@@ -54,7 +54,7 @@ namespace ProcessNote
             MessageBox.Show(dialogContent);
         }
         
-        private PerformanceCounter theCPUCounter = 
+        private readonly PerformanceCounter _theCPUCounter = 
             new PerformanceCounter("Processor", "% Processor Time", "_Total");
         
 
@@ -73,7 +73,7 @@ namespace ProcessNote
 
                 var processAttribute = new ProcessAttributes()
                 {
-                    cpu = (this.theCPUCounter.NextValue()/100).ToString() + "%",
+                    cpu = (this._theCPUCounter.NextValue()/100).ToString("0.00") + "%",
                     memory = currentProcess.PeakWorkingSet64/ (1024*1024), starttime = currentProcess.StartTime,
                     runtime = currentProcess.TotalProcessorTime
                 };
