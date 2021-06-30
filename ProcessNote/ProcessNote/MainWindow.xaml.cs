@@ -183,6 +183,52 @@ namespace ProcessNote
         {
             CloseCommentMessageBox();
         }
+
+        private void ProcessInfo_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            {
+                if (isCommentBoxOpen)
+                {
+                    string comment = InputTextBox.Text;
+                    if (comment != "")
+                    {
+                        AskUserToSavePreviousComment(comment);
+                    }
+                    CloseCommentMessageBox();
+                }
+                ProcessList selectedProcess = (ProcessList)ProcessInfo.SelectedItem;
+                List<ProcessAttributes> processAttributesList = new List<ProcessAttributes>();
+
+                currentProcess = processes.Where(process => process.Id.Equals(selectedProcess.id)).First();
+            
+            
+
+                try
+                {
+                
+
+                    var processAttribute = new ProcessAttributes()
+                    {
+                        cpu = (this._theCPUCounter.NextValue()/100).ToString("0.00") + "%",
+                        memory = (currentProcess.PeakWorkingSet64 / (1024 * 1024)).ToString("0.0") + " MB", starttime = currentProcess.StartTime,
+                        runtime = currentProcess.TotalProcessorTime
+                    };
+
+                    processAttributesList.Add(processAttribute);
+
+                    Attributes.ItemsSource = processAttributesList;
+                }
+                catch(Exception)
+                {
+                    MessageBox.Show("This process isn't running at this time.");
+                }
+
+                processThreads = new HashSet<ProcessThread>();
+                CollectThreads();
+
+                DisplayComments();
+            }
+        }
     }
 
     internal class ProcessComment
