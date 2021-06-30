@@ -33,12 +33,7 @@ namespace ProcessNote
         {
             InitializeComponent();
             processes = Process.GetProcesses();
-            List<ProcessList> processlist = new List<ProcessList>();
-            foreach (Process item in processes)
-            {
-                processlist.Add(new ProcessList() {id = item.Id, name = item.ProcessName});
-
-            }
+            var processlist = processes.Select(process => new ProcessList() { id = process.Id, name = process.ProcessName }).ToList();
 
             ProcessInfo.ItemsSource = processlist;
         }
