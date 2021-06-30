@@ -152,6 +152,11 @@ namespace ProcessNote
 
         private void ShowAttributes()
         {
+            ProcessList selectedProcess = (ProcessList)ProcessInfo.SelectedItem;
+            List<ProcessAttributes> processAttributesList = new List<ProcessAttributes>();
+            
+            currentProcess = processes.Where(process => process.Id.Equals(selectedProcess.id)).First();
+            
             if (isCommentBoxOpen)
             {
                 string comment = InputTextBox.Text;
@@ -161,17 +166,9 @@ namespace ProcessNote
                 }
                 CloseCommentMessageBox();
             }
-            ProcessList selectedProcess = (ProcessList)ProcessInfo.SelectedItem;
-            List<ProcessAttributes> processAttributesList = new List<ProcessAttributes>();
-
-            currentProcess = processes.Where(process => process.Id.Equals(selectedProcess.id)).First();
             
-            
-
             try
             {
-                
-
                 var processAttribute = new ProcessAttributes()
                 {
                     cpu = (this._theCPUCounter.NextValue()/100).ToString("0.00") + "%",
@@ -191,8 +188,8 @@ namespace ProcessNote
 
             processThreads = new HashSet<ProcessThread>();
             CollectThreads();
-
             DisplayComments();
+            
         }
         }
 
