@@ -67,7 +67,7 @@
         </ListView>
 
         <Button Style="{StaticResource MenuButton}" Click="ShowThreads_Click" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="195.4,105,0,0" Grid.Column="1">Show threads</Button>
-        <Button Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" Style="{StaticResource MenuButton}" HorizontalAlignment="Right" Margin="0,64.6,16.2,0" BorderThickness="2">Google Search</Button>
+        <Button Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" Style="{StaticResource MenuButton}" HorizontalAlignment="Right" Margin="0,64.6,16.2,0" BorderThickness="2" Click="GoogleSearch_OnClick">Google Search</Button>
         <CheckBox Name="AlwaysOnTop" IsChecked="True" Checked="AlwaysOnTop_CheckedChanged" Unchecked="AlwaysOnTop_CheckedChanged" Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="247.4,0,0,9.8" Background="#FF0DD2DF" Foreground="#FF0DD2DF" Width="214" Height="23" RenderTransformOrigin="0.498,0.904" FontFamily="OCR A Extended" FontSize="18">Always on top</CheckBox>
 
         <Button Style="{StaticResource MenuButton}" Click="AddComment_Click" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,14.6,16.2,98.8"   Grid.Column="1" Grid.Row="1">Add comment</Button>
