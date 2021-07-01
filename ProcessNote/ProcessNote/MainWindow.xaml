@@ -16,8 +16,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ListView Margin="10,10,206.6,6.2" Name="ProcessInfo" Grid.RowSpan="3" SelectionChanged="Select_Row" Background="#FF2923AB" BorderBrush="#FF0FD0E3" Foreground="#FF0FD0E3" FontFamily="OCR A Extended" FontSize="18" UseLayoutRounding="False">
-        <ListView Margin="10" Name="ProcessInfo" Grid.RowSpan="2" SelectionChanged="Select_Row" MouseDoubleClick="ProcessInfo_OnMouseDoubleClick">
+        <ListView Margin="10,10,206.6,6.2" Name="ProcessInfo" Grid.RowSpan="3" SelectionChanged="Select_Row" MouseDoubleClick="ProcessInfo_OnMouseDoubleClick" Background="#FF2923AB" BorderBrush="#FF0FD0E3" Foreground="#FF0FD0E3" FontFamily="OCR A Extended" FontSize="18" UseLayoutRounding="False">
             <ListView.View>
                 <GridView>
                     <GridViewColumn  Header="Name" Width="130" DisplayMemberBinding="{Binding name}" />
@@ -48,7 +47,7 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        
+
         <ListView Grid.Row="0" x:Name="Attributes" Margin="276,10,9.2,56.4" Background="#FF2923AB" BorderBrush="#FF0FD0E3" Foreground="#FF0FD0E3" FontFamily="OCR A Extended" Grid.ColumnSpan="2" FontSize="18">
             <ListView.View>
                 <GridView>
@@ -67,12 +66,12 @@
             </ListView.View>
         </ListView>
 
-        <Button Style="{StaticResource MenuButton}" Click="ShowThreads_Click" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="195.4,105,0,0" Grid.Column="1"  >Show threads</Button>
-            <Button Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right">Google Search</Button>
-        <CheckBox Name="AlwaysOnTop" IsChecked="True" Checked="AlwaysOnTop_CheckedChanged" Unchecked="AlwaysOnTop_CheckedChanged" Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left">Always on top</CheckBox>
+        <Button Style="{StaticResource MenuButton}" Click="ShowThreads_Click" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="195.4,105,0,0" Grid.Column="1">Show threads</Button>
+        <Button Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" Style="{StaticResource MenuButton}" HorizontalAlignment="Right" Margin="0,64.6,16.2,0" BorderThickness="2">Google Search</Button>
+        <CheckBox Name="AlwaysOnTop" IsChecked="True" Checked="AlwaysOnTop_CheckedChanged" Unchecked="AlwaysOnTop_CheckedChanged" Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="247.4,0,0,9.8" Background="#FF0DD2DF" Foreground="#FF0DD2DF" Width="214" Height="23" RenderTransformOrigin="0.498,0.904" FontFamily="OCR A Extended" FontSize="18">Always on top</CheckBox>
 
-        <Button Style="{StaticResource MenuButton}" Click="AddComment_Click" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,146,16.2,117.8"   Grid.Column="1" Grid.RowSpan="2">Add comment</Button>
-       
+        <Button Style="{StaticResource MenuButton}" Click="AddComment_Click" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,14.6,16.2,98.8"   Grid.Column="1" Grid.Row="1">Add comment</Button>
+
         <ListView Name="Comments" Margin="276,105,300.2,9.8" Grid.RowSpan="2" Background="#FF2923AB" BorderBrush="#FF0FD0E3" Foreground="#FF0FD0E3" Grid.ColumnSpan="2" FontFamily="OCR A Extended" FontSize="18">
             <ListView.View>
                 <GridView>
