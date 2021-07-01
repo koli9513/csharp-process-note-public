@@ -41,15 +41,23 @@ namespace ProcessNote
         private void ShowThreads_Click(object sender, RoutedEventArgs e)
         {
             string dialogContent;
-            try
+            if (currentProcess == null)
             {
-                var threadList = processThreads
-                    .Select(processThread => processThread.Id + " " + processThread.StartTime).ToArray();
-                dialogContent = string.Join(Environment.NewLine, threadList);
+                dialogContent = "Please select a process first.";
             }
-            catch (Exception)
+            else
             {
-                dialogContent = "No threads linked to this process";
+                try
+                {
+                    var threadList = processThreads
+                        .Select(processThread => $"    Thread ID: {processThread.Id}   Priority: {processThread.BasePriority}   State: {processThread.ThreadState}")
+                        .ToArray();
+                    dialogContent = string.Join(Environment.NewLine, threadList);
+                }
+                catch (Exception)
+                {
+                    dialogContent = "No threads linked to this process.";
+                }
             }
 
             MessageBox.Show(dialogContent);
