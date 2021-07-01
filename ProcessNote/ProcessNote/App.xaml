@@ -4,6 +4,28 @@
              xmlns:local="clr-namespace:ProcessNote"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="Button" x:Key="MenuButton" >
+            <Setter Property="Background" Value="#FF180A7A"/>
+            <Setter Property="BorderBrush" Value="#FF0DD2DF"/>
+            <Setter Property="Foreground" Value="#FF0DD2DF"/>
+            <Setter Property="Width" Value="261"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF0DD2DF"/>
+                    <Setter Property="Foreground" Value="#FF180A7A"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
     </Application.Resources>
 </Application>
