@@ -17,6 +17,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <ListView Margin="10,10,206.6,6.2" Name="ProcessInfo" Grid.RowSpan="3" SelectionChanged="Select_Row" Background="#FF2923AB" BorderBrush="#FF0FD0E3" Foreground="#FF0FD0E3" FontFamily="OCR A Extended" FontSize="18" UseLayoutRounding="False">
+        <ListView Margin="10" Name="ProcessInfo" Grid.RowSpan="2" SelectionChanged="Select_Row" MouseDoubleClick="ProcessInfo_OnMouseDoubleClick">
             <ListView.View>
                 <GridView>
                     <GridViewColumn  Header="Name" Width="130" DisplayMemberBinding="{Binding name}" />
@@ -67,6 +68,9 @@
         </ListView>
 
         <Button Style="{StaticResource MenuButton}" Click="ShowThreads_Click" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="195.4,105,0,0" Grid.Column="1"  >Show threads</Button>
+            <Button Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right">Google Search</Button>
+        <CheckBox Name="AlwaysOnTop" IsChecked="True" Checked="AlwaysOnTop_CheckedChanged" Unchecked="AlwaysOnTop_CheckedChanged" Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left">Always on top</CheckBox>
+
         <Button Style="{StaticResource MenuButton}" Click="AddComment_Click" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,146,16.2,117.8"   Grid.Column="1" Grid.RowSpan="2">Add comment</Button>
        
         <ListView Name="Comments" Margin="276,105,300.2,9.8" Grid.RowSpan="2" Background="#FF2923AB" BorderBrush="#FF0FD0E3" Foreground="#FF0FD0E3" Grid.ColumnSpan="2" FontFamily="OCR A Extended" FontSize="18">
