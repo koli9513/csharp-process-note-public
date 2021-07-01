@@ -228,5 +228,10 @@ namespace ProcessNote
 
         }
 
+        private void GoogleSearch_OnClick(object sender, RoutedEventArgs e)
+        {
+            var GoogleSearch = "https://www.google.com/search?q=" + currentProcess.ProcessName.ToString();
+            Process.Start("chrome.exe", GoogleSearch);
+        }
     }
 }

@@ -36,7 +36,7 @@
        </ListView>
             
         <Button Click="ShowThreads_Click" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left">Show threads</Button>
-        <Button Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right">Google Search</Button>
+        <Button Click="GoogleSearch_OnClick" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right">Google Search</Button>
         <Button Click="AddComment_Click" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left">Add comment</Button>
         <CheckBox Name="AlwaysOnTop" IsChecked="True" Checked="AlwaysOnTop_CheckedChanged" Unchecked="AlwaysOnTop_CheckedChanged" Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left">Always on top</CheckBox>
         <ListView Name="Comments" Grid.Row="2" Grid.ColumnSpan="2">
