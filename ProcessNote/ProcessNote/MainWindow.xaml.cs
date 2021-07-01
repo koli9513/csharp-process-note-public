@@ -1,20 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.UI.WebControls;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace ProcessNote
 {
@@ -23,25 +14,29 @@ namespace ProcessNote
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Process[] processes;
-        private HashSet<ProcessThread> processThreads = new HashSet<ProcessThread>();
-        private Process currentProcess;
-        private Dictionary<int, List<string>> processComments = new Dictionary<int, List<string>>();
-        private bool isCommentBoxOpen = false;
+        private readonly Process[] _processes;
+        private HashSet<ProcessThread> _processThreads = new HashSet<ProcessThread>();
+        private Process _currentProcess;
+        private readonly Dictionary<int, List<string>> _processComments = new Dictionary<int, List<string>>();
+        private bool _isCommentBoxOpen = false;
+
+        private readonly PerformanceCounter _theCpuCounter =
+            new PerformanceCounter("Processor", "% Processor Time", "_Total");
 
         public MainWindow()
         {
             InitializeComponent();
-            processes = Process.GetProcesses();
-            var processlist = processes.Select(process => new ProcessList() { id = process.Id, name = process.ProcessName }).ToList();
+            _processes = Process.GetProcesses();
+            var processList = _processes.Select(process => new ListedProcess()
+                {Id = process.Id, Name = process.ProcessName});
 
-            ProcessInfo.ItemsSource = processlist;
+            ProcessInfo.ItemsSource = processList;
         }
 
         private void ShowThreads_Click(object sender, RoutedEventArgs e)
         {
             string dialogContent;
-            if (currentProcess == null)
+            if (_currentProcess == null)
             {
                 dialogContent = "Please select a process first.";
             }
@@ -49,9 +44,9 @@ namespace ProcessNote
             {
                 try
                 {
-                    var threadList = processThreads
-                        .Select(processThread => $"    Thread ID: {processThread.Id}   Priority: {processThread.BasePriority}   State: {processThread.ThreadState}")
-                        .ToArray();
+                    var threadList = _processThreads
+                        .Select(processThread =>
+                            $"    Thread ID: {processThread.Id}   Priority: {processThread.BasePriority}   State: {processThread.ThreadState}");
                     dialogContent = string.Join(Environment.NewLine, threadList);
                 }
                 catch (Exception)
@@ -63,22 +58,19 @@ namespace ProcessNote
             MessageBox.Show(dialogContent);
         }
 
-        private readonly PerformanceCounter _theCpuCounter =
-            new PerformanceCounter("Processor", "% Processor Time", "_Total");
-
 
         private void Select_Row(object sender, SelectionChangedEventArgs e)
         {
-            RemindUserToSaveComment();
+            CheckIfCommentBoxIsOpen();
             ShowAttributes();
             DisplayComments();
         }
 
-        private void CloseCommentMessageBox()
+        private void CloseCommentBox()
         {
             CommentBox.Visibility = Visibility.Collapsed;
             InputTextBox.Text = string.Empty;
-            isCommentBoxOpen = false;
+            _isCommentBoxOpen = false;
         }
 
         private void AskUserToSavePreviousComment(string comment)
@@ -93,11 +85,10 @@ namespace ProcessNote
 
         private void DisplayComments()
         {
-            if (processComments.ContainsKey(currentProcess.Id))
+            if (_processComments.ContainsKey(_currentProcess.Id))
             {
-                var commentList = processComments[currentProcess.Id]
-                    .Select(comment => new ProcessComment() { Content = comment })
-                    .ToList();
+                var commentList = _processComments[_currentProcess.Id]
+                    .Select(comment => new ProcessComment() {Content = comment});
                 Comments.ItemsSource = commentList;
             }
             else
@@ -108,34 +99,34 @@ namespace ProcessNote
 
         private void SaveComment(string comment)
         {
-            if (processComments.ContainsKey(currentProcess.Id))
+            if (_processComments.ContainsKey(_currentProcess.Id))
             {
-                processComments[currentProcess.Id].Add(comment);
+                _processComments[_currentProcess.Id].Add(comment);
             }
             else
             {
-                processComments[currentProcess.Id] = new List<string>() {comment};
+                _processComments[_currentProcess.Id] = new List<string>() {comment};
             }
         }
 
         private void CollectThreads()
         {
-            foreach (ProcessThread processThread in currentProcess.Threads)
+            foreach (ProcessThread processThread in _currentProcess.Threads)
             {
-                processThreads.Add(processThread);
+                _processThreads.Add(processThread);
             }
         }
 
         private void AddComment_Click(object sender, RoutedEventArgs e)
         {
-            if (currentProcess == null)
+            if (_currentProcess == null)
             {
                 MessageBox.Show("Please select a process");
             }
             else
             {
                 CommentBox.Visibility = Visibility.Visible;
-                isCommentBoxOpen = true;
+                _isCommentBoxOpen = true;
             }
         }
 
@@ -143,59 +134,68 @@ namespace ProcessNote
         {
             string comment = InputTextBox.Text;
             SaveComment(comment);
-            CloseCommentMessageBox();
+            CloseCommentBox();
             DisplayComments();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            CloseCommentMessageBox();
+            CloseCommentBox();
         }
 
 
         private void ProcessInfo_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            RemindUserToSaveComment();
+            CheckIfCommentBoxIsOpen();
             ShowAttributes();
             DisplayComments();
         }
 
         private void ShowAttributes()
         {
-            ProcessList selectedProcess = (ProcessList) ProcessInfo.SelectedItem;
-            List<ProcessAttributes> processAttributesList = new List<ProcessAttributes>();
+            SetCurrentProcess();
 
-            currentProcess = processes.Where(process => process.Id.Equals(selectedProcess.id)).First();
+            List<ProcessAttributes> processAttributesList = new List<ProcessAttributes>();
 
             try
             {
-                var processAttribute = new ProcessAttributes()
-                {
-                    cpu = (this._theCpuCounter.NextValue() / 100).ToString("0.00") + "%",
-                    memory = (currentProcess.PeakWorkingSet64 / (1024 * 1024)).ToString("0.0") + " MB",
-                    starttime = currentProcess.StartTime,
-                    runtime = currentProcess.TotalProcessorTime
-                };
+                var processAttribute = GetProcessAttributes();
 
                 processAttributesList.Add(processAttribute);
 
                 Attributes.ItemsSource = processAttributesList;
+
+                _processThreads = new HashSet<ProcessThread>();
+                CollectThreads();
             }
             catch (Exception)
             {
                 MessageBox.Show("This process isn't running at this time.");
                 Attributes.ItemsSource = null;
             }
-
-            processThreads = new HashSet<ProcessThread>();
-            CollectThreads();
-
-
         }
 
-        private void RemindUserToSaveComment()
+        private ProcessAttributes GetProcessAttributes()
         {
-            if (isCommentBoxOpen)
+            var processAttribute = new ProcessAttributes()
+            {
+                Cpu = (this._theCpuCounter.NextValue() / 100).ToString("0.00") + "%",
+                Memory = (_currentProcess.PeakWorkingSet64 / (1024 * 1024)).ToString("0.0") + " MB",
+                StartTime = _currentProcess.StartTime,
+                Runtime = _currentProcess.TotalProcessorTime
+            };
+            return processAttribute;
+        }
+
+        private void SetCurrentProcess()
+        {
+            ListedProcess selectedProcess = (ListedProcess) ProcessInfo.SelectedItem;
+            _currentProcess = _processes.First(process => process.Id.Equals(selectedProcess.Id));
+        }
+
+        private void CheckIfCommentBoxIsOpen()
+        {
+            if (_isCommentBoxOpen)
             {
                 string comment = InputTextBox.Text;
                 if (comment != "")
@@ -203,43 +203,45 @@ namespace ProcessNote
                     AskUserToSavePreviousComment(comment);
                 }
 
-                CloseCommentMessageBox();
+                CloseCommentBox();
             }
-
         }
 
         private void AlwaysOnTop_CheckedChanged(object sender, RoutedEventArgs e)
         {
             Topmost = AlwaysOnTop.IsChecked == true;
-
         }
+
+        private void GoogleSearch_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_currentProcess != null)
+            {
+                var googleSearch = "https://www.google.com/search?q=" + _currentProcess.ProcessName;
+                Process.Start("chrome.exe", googleSearch);
+            }
+            else
+            {
+                MessageBox.Show("There is no process selected, there is nothing to search for.");
+            }
+        }
+
         internal class ProcessComment
         {
             public string Content { get; set; }
         }
 
-        internal class ProcessList
+        internal class ListedProcess
         {
-            public int id { get; set; }
-            public string name { get; set; }
-
-
+            public int Id { get; set; }
+            public string Name { get; set; }
         }
 
         internal class ProcessAttributes
         {
-
-            public string cpu { get; set; }
-            public string memory { get; set; }
-            public DateTime starttime { get; set; }
-            public TimeSpan runtime { get; set; }
-
-        }
-
-        private void GoogleSearch_OnClick(object sender, RoutedEventArgs e)
-        {
-            var GoogleSearch = "https://www.google.com/search?q=" + currentProcess.ProcessName.ToString();
-            Process.Start("chrome.exe", GoogleSearch);
+            public string Cpu { get; set; }
+            public string Memory { get; set; }
+            public DateTime StartTime { get; set; }
+            public TimeSpan Runtime { get; set; }
         }
     }
 }

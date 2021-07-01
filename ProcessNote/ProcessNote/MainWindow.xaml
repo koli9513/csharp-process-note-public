@@ -19,8 +19,8 @@
         <ListView Margin="10,10,206.6,6.2" Name="ProcessInfo" Grid.RowSpan="3" SelectionChanged="Select_Row" MouseDoubleClick="ProcessInfo_OnMouseDoubleClick" Background="#FF2923AB" BorderBrush="#FF0FD0E3" Foreground="#FF0FD0E3" FontFamily="OCR A Extended" FontSize="18" UseLayoutRounding="False">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn  Header="Name" Width="130" DisplayMemberBinding="{Binding name}" />
-                    <GridViewColumn Header="PID" Width="100" DisplayMemberBinding="{Binding id}" />
+                    <GridViewColumn  Header="Name" Width="130" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="PID" Width="100" DisplayMemberBinding="{Binding Id}" />
                     <GridView.ColumnHeaderContainerStyle>
                         <Style TargetType="{x:Type GridViewColumnHeader}">
                             <Setter Property="Background" Value="LightBlue" />
@@ -51,10 +51,10 @@
         <ListView Grid.Row="0" x:Name="Attributes" Margin="276,10,9.2,56.4" Background="#FF2923AB" BorderBrush="#FF0FD0E3" Foreground="#FF0FD0E3" FontFamily="OCR A Extended" Grid.ColumnSpan="2" FontSize="18">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="CPU" Width="90" DisplayMemberBinding="{Binding cpu}" />
-                    <GridViewColumn Header="RAM" Width="110" DisplayMemberBinding="{Binding memory}" />
-                    <GridViewColumn Header="Running Time" Width="210" DisplayMemberBinding="{Binding runtime}" />
-                    <GridViewColumn Header="Start Time" Width="220" DisplayMemberBinding="{Binding starttime}" />
+                    <GridViewColumn Header="CPU" Width="90" DisplayMemberBinding="{Binding Cpu}" />
+                    <GridViewColumn Header="RAM" Width="110" DisplayMemberBinding="{Binding Memory}" />
+                    <GridViewColumn Header="Running Time" Width="210" DisplayMemberBinding="{Binding Runtime}" />
+                    <GridViewColumn Header="Start Time" Width="220" DisplayMemberBinding="{Binding StartTime}" />
                     <GridView.ColumnHeaderContainerStyle>
                         <Style TargetType="{x:Type GridViewColumnHeader}">
                             <Setter Property="Background" Value="LightBlue" />
